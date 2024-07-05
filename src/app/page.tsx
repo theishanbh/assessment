@@ -10,43 +10,43 @@ export default function Home() {
 
   const courses = [
     {
-      id: 1,
+      id: 0,
       title: "Course 1",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: false,
     },
     {
-      id: 2,
+      id: 1,
       title: "Course 2",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: false,
     },
     {
-      id: 3,
+      id: 2,
       title: "Course 3",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: false,
     },
     {
-      id: 4,
+      id: 3,
       title: "Course 4",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: true,
     },
     {
-      id: 5,
+      id: 4,
       title: "Course 5",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: true,
     },
     {
-      id: 6,
+      id: 5,
       title: "Course 6",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: true,
     },
     {
-      id: 7,
+      id: 6,
       title: "Course 7",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
       locked: true,
