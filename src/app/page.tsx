@@ -1,113 +1,156 @@
-import Image from "next/image";
+"use client";
+
+import Navbar from "@/components/Navbar";
+import React, { useState } from "react";
 
 export default function Home() {
+  const [activeCourse, setActiveCourse] = useState(1);
+  const [activeTopic, setActiveTopic] = useState(2);
+  const [lockedCourses, setLockedCourses] = useState(4);
+
+  const courses = [
+    {
+      id: 1,
+      title: "Course 1",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: false,
+    },
+    {
+      id: 2,
+      title: "Course 2",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: false,
+    },
+    {
+      id: 3,
+      title: "Course 3",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: false,
+    },
+    {
+      id: 4,
+      title: "Course 4",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: true,
+    },
+    {
+      id: 5,
+      title: "Course 5",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: true,
+    },
+    {
+      id: 6,
+      title: "Course 6",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: true,
+    },
+    {
+      id: 7,
+      title: "Course 7",
+      topics: ["Topic 1", "Topic 2", "Topic 3"],
+      locked: true,
+    },
+  ];
+
+  const handleCourseClick = (index: number) => {
+    if (index < lockedCourses) {
+      setActiveCourse(index);
+    }
+  };
+
+  const handleTopicClick = (bigIndex: number, smallIndex: number) => {
+    setActiveCourse(bigIndex);
+    setActiveTopic(smallIndex);
+  };
+  // make a navbar
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <Navbar />
+
+      <div className=" bg-white flex w-full mx-auto">
+        <div className="flex flex-row-reverse gap-12 w-full">
+          <div className="w-1/4 bg-gray-900 text-white p-4">
+            <ul>
+              {courses.map((course, index) => (
+                <li
+                  key={course.id}
+                  className={`mb-2 ${
+                    course.id === activeCourse ? "text-orange-500" : ""
+                  }`}
+                >
+                  <div
+                    className={`flex items-center cursor-pointer ${
+                      course.locked ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    onClick={() => handleCourseClick(course.id)}
+                  >
+                    {!(index < lockedCourses) && (
+                      <span className="mr-2">🔒</span>
+                    )}
+                    {index < lockedCourses && index == activeCourse ? (
+                      <span className="mr-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className="h-6 w-6 text-white"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </span>
+                    ) : (
+                      <span className="mr-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className="h-6 w-6 text-white rotate-180"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </span>
+                    )}
+                    {course.title}
+                  </div>
+                  {course.id === activeCourse && course.topics.length > 0 && (
+                    <ul className="ml-4 mt-2">
+                      {course.topics.map((topic, index) => (
+                        <li
+                          key={index}
+                          className={`cursor-pointer ${
+                            activeTopic === index ? "text-orange-500" : ""
+                          }`}
+                          onClick={() => handleTopicClick(course.id, index)}
+                        >
+                          {course.id}.{index + 1}. {topic}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="w-3/4 bg-gray-700 text-white p-4 flex items-center justify-center">
+            {activeTopic
+              ? `Course ${activeCourse} Topic ${activeTopic}`
+              : `Course ${activeCourse}`}
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
 }
