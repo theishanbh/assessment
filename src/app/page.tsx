@@ -1,61 +1,55 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import React, { useState } from "react";
+import React, { act, useState } from "react";
 
 export default function Home() {
   const [activeCourse, setActiveCourse] = useState(1);
   const [activeTopic, setActiveTopic] = useState(2);
-  const [lockedCourses, setLockedCourses] = useState(4);
+  const [lockedCourses, setLockedCourses] = useState(2);
 
   const courses = [
     {
       id: 0,
       title: "Course 1",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: false,
     },
     {
       id: 1,
       title: "Course 2",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: false,
     },
     {
       id: 2,
       title: "Course 3",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: false,
     },
     {
       id: 3,
       title: "Course 4",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: true,
     },
     {
       id: 4,
       title: "Course 5",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: true,
     },
     {
       id: 5,
       title: "Course 6",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: true,
     },
     {
       id: 6,
       title: "Course 7",
       topics: ["Topic 1", "Topic 2", "Topic 3"],
-      locked: true,
     },
   ];
 
   const handleCourseClick = (index: number) => {
     if (index < lockedCourses) {
       setActiveCourse(index);
+      setActiveTopic(-1);
     }
   };
 
@@ -76,17 +70,13 @@ export default function Home() {
                 <li key={course.id} className={`mb-2 `}>
                   <div
                     className={`flex items-center cursor-pointer ${
-                      course.locked ? "opacity-50 cursor-not-allowed" : ""
-                    } ${
-                      index === activeCourse
-                        ? "text-orange-500 bg-gray-800 "
-                        : ""
+                      index === activeCourse ? " bg-gray-800 " : ""
                     }`}
                   >
                     {index >= lockedCourses && (
                       <span
                         className="mr-2"
-                        // onClick={() => setLockedCourses(index + 1)}
+                        onClick={() => setLockedCourses(index + 1)}
                       >
                         🔒
                       </span>
@@ -110,7 +100,15 @@ export default function Home() {
                           </svg>
                         </span>
                       ) : (
-                        <span className="mr-2">🔓</span>
+                        <span
+                          className="mr-2"
+                          onClick={() => {
+                            setLockedCourses(index - 1);
+                            setActiveCourse(index - 1);
+                          }}
+                        >
+                          🔓
+                        </span>
                       ))}
                     <span onClick={() => handleCourseClick(course.id)}>
                       {course.title}
@@ -124,9 +122,12 @@ export default function Home() {
                           className={`cursor-pointer ${
                             activeTopic === index ? "text-orange-500" : ""
                           }`}
-                          onClick={() => handleTopicClick(course.id, index)}
+                          onClick={() => {
+                            handleTopicClick(course.id, index);
+                            console.log(activeCourse, activeTopic);
+                          }}
                         >
-                          {course.id}.{index + 1}. {topic}
+                          {course.id + 1}.{index + 1}. {topic}
                         </li>
                       ))}
                     </ul>
@@ -136,9 +137,14 @@ export default function Home() {
             </ul>
           </div>
           <div className="w-3/4 bg-gray-700 text-white p-4 flex items-center justify-center">
-            {activeTopic
-              ? `Course ${activeCourse} Topic ${activeTopic}`
-              : `Course ${activeCourse}`}
+            {activeTopic >= 0 ? (
+              <span className="flex flex-col items-center justify-center">
+                <span>Course {activeCourse + 1}</span>
+                <span> Topic {activeTopic + 1}</span>
+              </span>
+            ) : (
+              `Course ${activeCourse + 1}`
+            )}
           </div>
         </div>
       </div>
