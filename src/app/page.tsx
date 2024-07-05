@@ -73,57 +73,48 @@ export default function Home() {
           <div className="w-1/4 bg-gray-900 text-white p-4">
             <ul>
               {courses.map((course, index) => (
-                <li
-                  key={course.id}
-                  className={`mb-2 ${
-                    course.id === activeCourse ? "text-orange-500" : ""
-                  }`}
-                >
+                <li key={course.id} className={`mb-2 `}>
                   <div
                     className={`flex items-center cursor-pointer ${
                       course.locked ? "opacity-50 cursor-not-allowed" : ""
+                    } ${
+                      index === activeCourse
+                        ? "text-orange-500 bg-gray-800 "
+                        : ""
                     }`}
-                    onClick={() => handleCourseClick(course.id)}
                   >
-                    {!(index < lockedCourses) && (
-                      <span className="mr-2">🔒</span>
-                    )}
-                    {index < lockedCourses && index == activeCourse ? (
-                      <span className="mr-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          className="h-6 w-6 text-white"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </span>
-                    ) : (
-                      <span className="mr-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          className="h-6 w-6 text-white rotate-180"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
+                    {index >= lockedCourses && (
+                      <span
+                        className="mr-2"
+                        // onClick={() => setLockedCourses(index + 1)}
+                      >
+                        🔒
                       </span>
                     )}
-                    {course.title}
+                    {index < lockedCourses &&
+                      (index == activeCourse ? (
+                        <span className="mr-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            className="h-6 w-6 text-white"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </span>
+                      ) : (
+                        <span className="mr-2">🔓</span>
+                      ))}
+                    <span onClick={() => handleCourseClick(course.id)}>
+                      {course.title}
+                    </span>
                   </div>
                   {course.id === activeCourse && course.topics.length > 0 && (
                     <ul className="ml-4 mt-2">
